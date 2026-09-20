@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nebula Copilot</title>
+<meta name="description" content="The AI copilot that reads your entire codebase before it answers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --space:#06070f;
+    --space-2:#0b0d1c;
+    --glass:rgba(255,255,255,0.06);
+    --glass-border:rgba(255,255,255,0.12);
+    --ink:#eef0fb;
+    --dim:#8b90b3;
+    --iris:#7c6bff;
+    --aqua:#4de3c1;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--space);
+    color:var(--ink);
+    font-family:'Sora',sans-serif;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  code, .mono{font-family:'JetBrains Mono',monospace;}
+  .wrap{max-width:1200px;margin:0 auto;padding-inline:32px;position:relative;z-index:2;}
+
+  #mesh{position:fixed;inset:0;z-index:0;}
+
+  .glass{
+    background:var(--glass);
+    border:1px solid var(--glass-border);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border-radius:20px;
+  }
+
+  header{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;padding-block:26px;}
+  .mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;}
+  .mark .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--iris),var(--aqua));box-shadow:0 0 16px rgba(124,107,255,0.7);}
+  nav{display:flex;gap:32px;font-size:0.9rem;color:var(--dim);}
+  nav a:hover{color:var(--ink);}
+  .nav-cta{padding:10px 20px;font-weight:600;font-size:0.85rem;}
+
+  .hero{padding-block:72px 40px;text-align:center;position:relative;}
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:0.8rem;color:var(--dim);padding:8px 18px;margin-bottom:32px;
+  }
+  .hero-badge .mono{color:var(--aqua);}
+  h1{
+    font-weight:700;font-size:clamp(2.6rem,6.5vw,4.8rem);line-height:1.05;
+    margin:0 auto 26px;max-width:16ch;text-wrap:balance;
+  }
+  h1 .grad{background:linear-gradient(135deg,var(--iris),var(--aqua));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero p{max-width:52ch;margin:0 auto 40px;color:var(--dim);font-size:1.2rem;line-height:1.6;}
+  .cta-row{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .btn{font-weight:600;font-size:0.95rem;padding:15px 30px;border-radius:12px;display:inline-block;transition:transform .2s, box-shadow .2s;}
+  .btn-solid{background:linear-gradient(135deg,var(--iris),#5a4ae0);box-shadow:0 8px 24px rgba(124,107,255,0.35);}
+  .btn-solid:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(124,107,255,0.5);}
+  .btn-glass{color:var(--ink);}
+  .btn-glass:hover{border-color:var(--aqua);}
+
+  .terminal{
+    max-width:820px;margin:64px auto 0;padding:0;overflow:hidden;text-align:left;
+    opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;
+  }
+  .terminal.in{opacity:1;transform:none;}
+  .term-bar{display:flex;gap:8px;padding:16px 20px;border-bottom:1px solid var(--glass-border);}
+  .term-bar span{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,0.15);}
+  .term-body{padding:24px 26px;font-size:0.92rem;line-height:1.8;}
+  .term-body .c-dim{color:var(--dim);}
+  .term-body .c-iris{color:var(--iris);}
+  .term-body .c-aqua{color:var(--aqua);}
+  .cursor{display:inline-block;width:8px;height:1.1em;background:var(--aqua);vertical-align:text-bottom;animation:blink 1s step-end infinite;}
+  @keyframes blink{50%{opacity:0;}}
+
+  section{position:relative;z-index:5;padding-block:100px;}
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 64px;}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--aqua);letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:16px;}
+  h2{font-size:clamp(2rem,3.6vw,2.8rem);margin:0;text-wrap:balance;}
+  .section-head p{color:var(--dim);margin-top:18px;font-size:1.1rem;}
+
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .feature-card{padding:32px;transition-delay:calc(var(--i) * 80ms);}
+  .feature-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--iris),var(--aqua));margin-bottom:22px;
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--space);}
+  .feature-card h3{margin:0 0 10px;font-size:1.2rem;}
+  .feature-card p{margin:0;color:var(--dim);font-size:0.98rem;line-height:1.65;}
+
+  .stats-row{display:flex;justify-content:space-around;flex-wrap:wrap;gap:32px;padding:48px 40px;}
+  .stat{text-align:center;}
+  .stat .n{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:2.4rem;background:linear-gradient(135deg,var(--iris),var(--aqua));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat .l{color:var(--dim);font-size:0.85rem;margin-top:6px;}
+
+  .cta-final{text-align:center;padding:64px 40px;}
+  .cta-final h2{margin-bottom:16px;}
+  .cta-final p{color:var(--dim);margin-bottom:32px;}
+
+  footer{position:relative;z-index:5;padding-block:40px;border-top:1px solid var(--glass-border);}
+  .foot-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;font-size:0.85rem;color:var(--dim);}
+
+  @media (max-width:860px){
+    .wrap{padding-inline:20px;}
+    nav{display:none;}
+    .feature-grid{grid-template-columns:1fr;}
+    .stats-row{padding:32px 0;}
+  }
+</style>
+</head>
+<body>
+<canvas id="mesh"></canvas>
+
+<div class="wrap">
+  <header>
+    <div class="mark"><span class="dot"></span> Nebula</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#stats">Numbers</a>
+      <a href="#start">Get Started</a>
+    </nav>
+    <a href="#start" class="btn btn-solid nav-cta">Start free</a>
+  </header>
+
+  <div class="hero">
+    <span class="hero-badge glass"><span class="mono">v2.4</span> · Now reads monorepos natively</span>
+    <h1>The AI copilot that reads your <span class="grad">whole codebase</span> before it answers.</h1>
+    <p>Nebula indexes every file, every commit message, and every open PR — so its answers are grounded in your actual code, not a guess about what code usually looks like.</p>
+    <div class="cta-row">
+      <a href="#start" class="btn btn-solid">Start free — 14 days</a>
+      <a href="#" class="btn btn-glass glass">Watch the 90s demo</a>
+    </div>
+
+    <div class="terminal glass" id="terminal">
+      <div class="term-bar"><span></span><span></span><span></span></div>
+      <div class="term-body mono">
+        <div><span class="c-dim">$</span> nebula ask "why does checkout retry twice on timeout?"</div>
+        <div style="margin-top:14px;"><span class="c-iris">nebula</span> <span class="c-dim">indexed 14,209 files, 3 services · 1.2s</span></div>
+        <div style="margin-top:10px;">The retry comes from <span class="c-aqua">PaymentClient.charge()</span> — it wraps</div>
+        <div>Stripe's call in a 2-attempt loop added in commit <span class="c-aqua">a31f9c2</span>,</div>
+        <div>after the Nov incident where a single timeout doubled orders.<span class="cursor"></span></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="features">
+    <div class="section-head reveal">
+      <span class="eyebrow">Why teams switch</span>
+      <h2>Answers grounded in your code, not the internet's average.</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature-card glass reveal" style="--i:0;">
+        <div class="feature-icon">01</div>
+        <h3>Full-repo context</h3>
+        <p>No file is too deep. Nebula walks your import graph before answering, not just the file you have open.</p>
+      </div>
+      <div class="feature-card glass reveal" style="--i:1;">
+        <div class="feature-icon">02</div>
+        <h3>Commit-aware memory</h3>
+        <p>It reads why a line changed, not just what it says now — commit messages and linked PRs included.</p>
+      </div>
+      <div class="feature-card glass reveal" style="--i:2;">
+        <div class="feature-icon">03</div>
+        <h3>Runs on your infra</h3>
+        <p>Self-hostable index, nothing leaves your VPC. Your code never trains a model you don't control.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="stats">
+    <div class="glass stats-row reveal">
+      <div class="stat"><span class="n">14,209</span><span class="l">files indexed, avg. repo</span></div>
+      <div class="stat"><span class="n">1.2s</span><span class="l">median answer time</span></div>
+      <div class="stat"><span class="n">0</span><span class="l">bytes leave your infra</span></div>
+    </div>
+  </section>
+
+  <section id="start">
+    <div class="glass cta-final reveal">
+      <h2>Point it at a repo. Ask it something real.</h2>
+      <p>Free for repos under 50k lines. No credit card for the trial.</p>
+      <a href="#" class="btn btn-solid">Start free — 14 days</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot-row">
+      <span>NEBULA COPILOT</span>
+      <span>SELF-HOSTABLE · SOC2 IN PROGRESS</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // animated gradient mesh background
+  var canvas = document.getElementById('mesh');
+  var ctx = canvas.getContext('2d');
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  var blobs = [
+    {x:0.15,y:0.2,r:0.35,c:'124,107,255',t:0},
+    {x:0.85,y:0.15,r:0.30,c:'77,227,193',t:1.5},
+    {x:0.7,y:0.75,r:0.32,c:'90,74,224',t:3},
+    {x:0.2,y:0.8,r:0.26,c:'77,227,193',t:4.5}
+  ];
+  function draw(time){
+    ctx.fillStyle = '#06070f';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    var dim = Math.min(canvas.width, canvas.height);
+    for (var i=0;i<blobs.length;i++){
+      var b = blobs[i];
+      var cx = (b.x + Math.sin(time*0.00012 + b.t)*0.06) * canvas.width;
+      var cy = (b.y + Math.cos(time*0.0001 + b.t)*0.06) * canvas.height;
+      var r = b.r * dim;
+      var grad = ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+      grad.addColorStop(0, 'rgba('+b.c+',0.28)');
+      grad.addColorStop(1, 'rgba('+b.c+',0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(cx,cy,r,0,Math.PI*2);
+      ctx.fill();
+    }
+    if (!reduced) requestAnimationFrame(draw);
+  }
+  try{
+    resize();
+    window.addEventListener('resize', resize);
+    requestAnimationFrame(draw);
+    if (reduced) draw(0);
+  }catch(e){}
+
+  // scroll reveal
+  try{
+    var els = document.querySelectorAll('.reveal, .terminal');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15});
+    els.forEach(function(el){ io.observe(el); });
+  }catch(e){
+    document.querySelectorAll('.reveal, .terminal').forEach(function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+
+</body>
+</html>
