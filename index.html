@@ -45,7 +45,7 @@
   header{position:relative;z-index:5;display:flex;justify-content:space-between;align-items:center;padding-block:26px;}
   .mark{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.15rem;}
   .mark .dot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,var(--iris),var(--aqua));box-shadow:0 0 16px rgba(124,107,255,0.7);}
-  nav{display:flex;gap:32px;font-size:0.9rem;color:var(--dim);}
+  nav{display:flex;gap:28px;font-size:0.88rem;color:var(--dim);}
   nav a:hover{color:var(--ink);}
   .nav-cta{padding:10px 20px;font-weight:600;font-size:0.85rem;}
 
@@ -82,6 +82,9 @@
   .cursor{display:inline-block;width:8px;height:1.1em;background:var(--aqua);vertical-align:text-bottom;animation:blink 1s step-end infinite;}
   @keyframes blink{50%{opacity:0;}}
 
+  .logos-strip{display:flex;justify-content:center;align-items:center;gap:56px;flex-wrap:wrap;padding-block:44px;opacity:0.55;filter:grayscale(1);}
+  .logos-strip .logo{font-family:'JetBrains Mono',monospace;font-weight:500;font-size:1rem;letter-spacing:0.02em;color:var(--dim);}
+
   section{position:relative;z-index:5;padding-block:100px;}
   .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
   .reveal.in{opacity:1;transform:none;}
@@ -90,12 +93,40 @@
   h2{font-size:clamp(2rem,3.6vw,2.8rem);margin:0;text-wrap:balance;}
   .section-head p{color:var(--dim);margin-top:18px;font-size:1.1rem;}
 
+  .steps{display:flex;flex-direction:column;gap:80px;}
+  .step-row{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .step-row.rev{direction:rtl;}
+  .step-row.rev > *{direction:ltr;}
+  .step-num{font-family:'JetBrains Mono',monospace;color:var(--aqua);font-size:0.85rem;letter-spacing:0.1em;}
+  .step-row h3{font-size:1.6rem;margin:14px 0 14px;}
+  .step-row p{color:var(--dim);font-size:1.05rem;line-height:1.7;margin:0;}
+  .step-visual{border-radius:18px;overflow:hidden;}
+  .step-visual img{width:100%;aspect-ratio:4/3;object-fit:cover;}
+
   .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
   .feature-card{padding:32px;transition-delay:calc(var(--i) * 80ms);}
   .feature-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--iris),var(--aqua));margin-bottom:22px;
     display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--space);}
   .feature-card h3{margin:0 0 10px;font-size:1.2rem;}
   .feature-card p{margin:0;color:var(--dim);font-size:0.98rem;line-height:1.65;}
+
+  .testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .testimonial-card{padding:30px;display:flex;flex-direction:column;gap:20px;}
+  .testimonial-card p{margin:0;font-size:1.02rem;line-height:1.65;color:var(--ink);}
+  .testimonial-person{display:flex;align-items:center;gap:12px;}
+  .testimonial-person img{width:42px;height:42px;border-radius:50%;object-fit:cover;}
+  .testimonial-person .name{font-weight:600;font-size:0.92rem;}
+  .testimonial-person .role{color:var(--dim);font-size:0.82rem;}
+
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .price-card{padding:36px 30px;position:relative;}
+  .price-card.hi{border-color:var(--iris);background:linear-gradient(160deg, rgba(124,107,255,0.12), rgba(77,227,193,0.04));}
+  .price-card .badge{position:absolute;top:-13px;right:26px;background:linear-gradient(135deg,var(--iris),var(--aqua));color:var(--space);font-size:0.72rem;font-weight:700;padding:5px 14px;border-radius:999px;}
+  .price-card h3{margin:0 0 6px;font-size:1.15rem;}
+  .price-card .p{font-size:2.2rem;font-weight:700;margin:16px 0 22px;}
+  .price-card .p span{font-size:0.95rem;color:var(--dim);font-weight:400;}
+  .price-card ul{list-style:none;padding:0;margin:0 0 26px;display:flex;flex-direction:column;gap:12px;color:var(--dim);font-size:0.92rem;}
+  .price-card li::before{content:'✓ ';color:var(--aqua);}
 
   .stats-row{display:flex;justify-content:space-around;flex-wrap:wrap;gap:32px;padding:48px 40px;}
   .stat{text-align:center;}
@@ -112,8 +143,9 @@
   @media (max-width:860px){
     .wrap{padding-inline:20px;}
     nav{display:none;}
-    .feature-grid{grid-template-columns:1fr;}
+    .feature-grid,.testimonial-grid,.pricing-grid{grid-template-columns:1fr;}
     .stats-row{padding:32px 0;}
+    .step-row,.step-row.rev{grid-template-columns:1fr;direction:ltr;}
   }
 </style>
 </head>
@@ -124,8 +156,9 @@
   <header>
     <div class="mark"><span class="dot"></span> Nebula</div>
     <nav>
+      <a href="#how">How it works</a>
       <a href="#features">Features</a>
-      <a href="#stats">Numbers</a>
+      <a href="#pricing">Pricing</a>
       <a href="#start">Get Started</a>
     </nav>
     <a href="#start" class="btn btn-solid nav-cta">Start free</a>
@@ -151,6 +184,53 @@
       </div>
     </div>
   </div>
+
+  <div class="logos-strip">
+    <span class="logo">FIELDNOTE</span>
+    <span class="logo">◆ ARBOR</span>
+    <span class="logo">KEYSTONE</span>
+    <span class="logo">▲ TRIVET</span>
+    <span class="logo">LOOPWORKS</span>
+  </div>
+
+  <section id="how">
+    <div class="section-head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2>Three steps, no config files to write.</h2>
+    </div>
+    <div class="steps">
+      <div class="step-row reveal">
+        <div>
+          <span class="step-num mono">STEP 01</span>
+          <h3>Point it at a repo</h3>
+          <p>One command connects Nebula to your Git provider. It clones, indexes, and builds a dependency graph of the entire codebase in the background.</p>
+        </div>
+        <div class="step-visual glass">
+          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=900&auto=format&fit=crop" alt="Developer's screen showing code being indexed in a terminal">
+        </div>
+      </div>
+      <div class="step-row rev reveal">
+        <div>
+          <span class="step-num mono">STEP 02</span>
+          <h3>Ask it anything, in plain language</h3>
+          <p>From the CLI, your IDE, or Slack — ask why something works the way it does, and get an answer that cites the actual file and commit.</p>
+        </div>
+        <div class="step-visual glass">
+          <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=900&auto=format&fit=crop" alt="Team collaborating around a laptop reviewing code together">
+        </div>
+      </div>
+      <div class="step-row reveal">
+        <div>
+          <span class="step-num mono">STEP 03</span>
+          <h3>Keep it in sync automatically</h3>
+          <p>Every merge re-indexes only what changed. Nebula's understanding of your code is never more than a few minutes stale.</p>
+        </div>
+        <div class="step-visual glass">
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=900&auto=format&fit=crop" alt="Abstract visualization of a code dependency graph on a monitor">
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section id="features">
     <div class="section-head reveal">
@@ -184,6 +264,64 @@
     </div>
   </section>
 
+  <section id="testimonials">
+    <div class="section-head reveal">
+      <span class="eyebrow">From teams running it</span>
+      <h2>What changes once it's actually indexed.</h2>
+    </div>
+    <div class="testimonial-grid">
+      <div class="testimonial-card glass reveal">
+        <p>"Onboarding a new backend engineer used to take two weeks of pairing. Now they ask Nebula the first day and get answers with the actual commit history attached."</p>
+        <div class="testimonial-person">
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=100&auto=format&fit=crop" alt="Portrait of Dana Whitfield">
+          <div><div class="name">Dana Whitfield</div><div class="role">Staff Engineer, Fieldnote</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <p>"It's the first AI tool on our stack that admits when it doesn't know something instead of confidently making up a function name."</p>
+        <div class="testimonial-person">
+          <img src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop" alt="Portrait of Marcus Ilori">
+          <div><div class="name">Marcus Ilori</div><div class="role">CTO, Arbor</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <p>"We self-host it inside our own VPC. Security actually approved an AI tool for once, which tells you everything."</p>
+        <div class="testimonial-person">
+          <img src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?q=80&w=100&auto=format&fit=crop" alt="Portrait of Priya Anand">
+          <div><div class="name">Priya Anand</div><div class="role">Platform Lead, Keystone</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="section-head reveal">
+      <span class="eyebrow">Pricing</span>
+      <h2>Free while your repo is small.</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card glass reveal">
+        <h3>Solo</h3>
+        <div class="p">$0<span>/mo</span></div>
+        <ul><li>Repos under 50k lines</li><li>1 seat</li><li>Community support</li></ul>
+        <a href="#start" class="btn btn-glass glass" style="width:100%;text-align:center;">Start free</a>
+      </div>
+      <div class="price-card glass hi reveal">
+        <span class="badge">Most teams</span>
+        <h3>Team</h3>
+        <div class="p">$38<span>/seat/mo</span></div>
+        <ul><li>Unlimited repo size</li><li>Slack &amp; IDE integrations</li><li>Priority indexing</li></ul>
+        <a href="#start" class="btn btn-solid" style="width:100%;text-align:center;">Start free</a>
+      </div>
+      <div class="price-card glass reveal">
+        <h3>Enterprise</h3>
+        <div class="p">Custom</div>
+        <ul><li>Self-hosted, air-gapped option</li><li>SSO &amp; audit logs</li><li>Dedicated infra</li></ul>
+        <a href="#" class="btn btn-glass glass" style="width:100%;text-align:center;">Talk to us</a>
+      </div>
+    </div>
+  </section>
+
   <section id="start">
     <div class="glass cta-final reveal">
       <h2>Point it at a repo. Ask it something real.</h2>
@@ -202,7 +340,6 @@
 
 <script>
 (function(){
-  // animated gradient mesh background
   var canvas = document.getElementById('mesh');
   var ctx = canvas.getContext('2d');
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -239,7 +376,6 @@
     if (reduced) draw(0);
   }catch(e){}
 
-  // scroll reveal
   try{
     var els = document.querySelectorAll('.reveal, .terminal');
     var io = new IntersectionObserver(function(entries){
@@ -249,7 +385,7 @@
           io.unobserve(entry.target);
         }
       });
-    }, {threshold:0.15});
+    }, {threshold:0.12});
     els.forEach(function(el){ io.observe(el); });
   }catch(e){
     document.querySelectorAll('.reveal, .terminal').forEach(function(el){ el.classList.add('in'); });
