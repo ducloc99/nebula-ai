@@ -253,6 +253,55 @@
         <h3>Runs on your infra</h3>
         <p>Self-hostable index, nothing leaves your VPC. Your code never trains a model you don't control.</p>
       </div>
+      <div class="feature-card glass reveal" style="--i:3;">
+        <div class="feature-icon">04</div>
+        <h3>Multi-repo awareness</h3>
+        <p>Ask a question that spans your frontend and three backend services — Nebula follows the API calls across repos.</p>
+      </div>
+      <div class="feature-card glass reveal" style="--i:4;">
+        <div class="feature-icon">05</div>
+        <h3>Cites its sources</h3>
+        <p>Every answer links back to the exact file, line, and commit it drew from — click through and verify it yourself.</p>
+      </div>
+      <div class="feature-card glass reveal" style="--i:5;">
+        <div class="feature-icon">06</div>
+        <h3>Review-aware</h3>
+        <p>It reads open PR threads too, so it knows a pattern is already being deprecated before the merge lands.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="casestudy">
+    <div class="step-row reveal" style="align-items:center;">
+      <div class="step-visual glass">
+        <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?q=80&w=900&auto=format&fit=crop" alt="Engineering team reviewing a dashboard together in a meeting room">
+      </div>
+      <div>
+        <span class="eyebrow">Case Study — Fieldnote</span>
+        <h3 style="font-size:1.7rem;margin:0 0 16px;">From 14 days to 1 day onboarding.</h3>
+        <p style="color:var(--dim);font-size:1.05rem;line-height:1.7;margin:0 0 20px;">Fieldnote's platform team was spending two engineers' full attention on every new hire's first two weeks. After indexing their 40-service monorepo with Nebula, new engineers ship their first PR by day three.</p>
+        <div style="display:flex;gap:32px;">
+          <div><span style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;color:var(--aqua);">-71%</span><div style="color:var(--dim);font-size:0.85rem;">Onboarding time</div></div>
+          <div><span style="font-family:'JetBrains Mono',monospace;font-size:1.6rem;color:var(--aqua);">3.2k</span><div style="color:var(--dim);font-size:0.85rem;">Questions asked / mo</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="integrations">
+    <div class="section-head reveal">
+      <span class="eyebrow">Fits your stack</span>
+      <h2>Works where your team already is.</h2>
+    </div>
+    <div class="feature-grid" style="grid-template-columns:repeat(4,1fr);">
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">GitHub</h3></div>
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">GitLab</h3></div>
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">Slack</h3></div>
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">VS Code</h3></div>
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">JetBrains</h3></div>
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">Linear</h3></div>
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">Notion</h3></div>
+      <div class="feature-card glass reveal" style="text-align:center;"><h3 style="font-size:1rem;">CLI</h3></div>
     </div>
   </section>
 
@@ -261,6 +310,8 @@
       <div class="stat"><span class="n">14,209</span><span class="l">files indexed, avg. repo</span></div>
       <div class="stat"><span class="n">1.2s</span><span class="l">median answer time</span></div>
       <div class="stat"><span class="n">0</span><span class="l">bytes leave your infra</span></div>
+      <div class="stat"><span class="n">340+</span><span class="l">teams self-hosting</span></div>
+      <div class="stat"><span class="n">99.95%</span><span class="l">index uptime</span></div>
     </div>
   </section>
 
@@ -289,6 +340,27 @@
         <div class="testimonial-person">
           <img src="https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?q=80&w=100&auto=format&fit=crop" alt="Portrait of Priya Anand">
           <div><div class="name">Priya Anand</div><div class="role">Platform Lead, Keystone</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <p>"I stopped writing wiki pages nobody read. Now the wiki is the codebase, and Nebula reads it back to whoever asks."</p>
+        <div class="testimonial-person">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&auto=format&fit=crop" alt="Portrait of Owen Castellano">
+          <div><div class="name">Owen Castellano</div><div class="role">Eng Manager, Loopworks</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <p>"The multi-repo answers are what sold the team. Our frontend and billing service live in different repos and it still connects the dots."</p>
+        <div class="testimonial-person">
+          <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=100&auto=format&fit=crop" alt="Portrait of Sana Kwon">
+          <div><div class="name">Sana Kwon</div><div class="role">Backend Lead, Trivet</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card glass reveal">
+        <p>"Rolled it out to 40 engineers in an afternoon. The only tool this year that didn't need a training session."</p>
+        <div class="testimonial-person">
+          <img src="https://images.unsplash.com/photo-1519345182560-3f2917c472ef?q=80&w=100&auto=format&fit=crop" alt="Portrait of Rhea Fontaine">
+          <div><div class="name">Rhea Fontaine</div><div class="role">VP Engineering, Keystone</div></div>
         </div>
       </div>
     </div>
